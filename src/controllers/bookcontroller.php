@@ -48,7 +48,7 @@ class BookController {
             ];
             $book_instance = new BookModel();
             $created_book = $book_instance->create($allData);
-            echo json_encode(HttpResponses::created($created_book));
+            echo json_encode(HttpResponses::created());
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
