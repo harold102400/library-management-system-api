@@ -3,6 +3,7 @@
 use Api\controllers\BookController;
 use Api\controllers\UserController;
 use Api\helpers\HttpResponses;
+use Api\midlewares\AuthMiddleware;
 
 $router = new \Bramus\Router\Router();
 
@@ -21,6 +22,7 @@ $router->get('/api/books/{id}', function($id) {
 });
 
 $router->post('/api/books', function() {
+    AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     $book = new BookController();
@@ -42,6 +44,7 @@ $router->post('/api/auth', function(){
 });
 
 $router->put('/api/books/{id}', function($id) {
+    AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     $book = new BookController();
@@ -49,6 +52,7 @@ $router->put('/api/books/{id}', function($id) {
 });
 
 $router->delete('/api/books/{id}', function($id) {
+    AuthMiddleware::handle();
     $book = new BookController();
     $book->delete($id);
 });

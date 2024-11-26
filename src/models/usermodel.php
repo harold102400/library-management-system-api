@@ -48,10 +48,10 @@ class UserModel
 
     public function getUser(int $id)
     {
-        $query = "SELECT * FROM users WHERE id = :id";
+        $query = "SELECT * FROM users WHERE user_id = :user_id";
         $stmt = $this->conn->prepare($query);
         if ($stmt) {
-            $stmt->execute(["id" => $id]);
+            $stmt->execute(["user_id" => $id]);
             $rows = $stmt->fetchColumn();
             return $rows;
         }

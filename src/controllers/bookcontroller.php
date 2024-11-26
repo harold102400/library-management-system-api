@@ -8,12 +8,6 @@ use Api\helpers\HttpResponses;
 use Api\models\BookModel;
 
 class BookController {
-    public $validate;
-    public function __construct()
-    {
-        $token = new UserController();
-        $this->validate = $token->validateToken();
-    }
     public function getAllBooks()
     {
         $page = (int)@$_GET['page'] ?? 1;
@@ -41,9 +35,6 @@ class BookController {
 
     public function create($new_book)
     {
-        if (!$this->validate) {
-            return;
-        }
         try {
             $allData = [
                 "title" => $new_book["title"],
@@ -85,9 +76,6 @@ class BookController {
 
     public function update(int $id, array $data)
     {
-        if (!$this->validate) {
-            return;
-        }
         try {
             $allData = [
                 "id" => $id,
@@ -112,9 +100,6 @@ class BookController {
 
     public function delete(int $id)
     {
-        if (!$this->validate) {
-            return;
-        }
         try {
             $book_instance = new BookModel();
             $book_instance->delete($id);
