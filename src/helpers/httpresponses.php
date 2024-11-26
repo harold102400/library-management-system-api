@@ -20,7 +20,7 @@ class HttpResponses {
     {
         http_response_code(201);
         self::$message['status'] = 201;
-        return self::$message;
+        return self::$message['status'];
     }
 
     public static function noContent()

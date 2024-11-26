@@ -37,17 +37,17 @@ class BookController {
     {
         try {
             $allData = [
-                ":title" => $new_book["title"],
-                ":author" => $new_book["author"],
-                ":year" => $new_book["year"],
-                ":genre" => $new_book["genre"],
-                ":isFavorite" => $new_book["isFavorite"],
-                ":user_id" => $new_book["user_id"],
-                ":createdAt" => date('Y-m-d h:i:s'),
-                ":updatedAt" => null
+                "title" => $new_book["title"],
+                "author" => $new_book["author"],
+                "year" => $new_book["year"],
+                "genre" => json_encode($new_book["genre"]),
+                "isFavorite" => $new_book["isFavorite"],
+                "user_id" => $new_book["user_id"],
+                "createdAt" => date('Y-m-d h:i:s'),
+                "updatedAt" => null
             ];
             $book_instance = new BookModel();
-            $created_book = $book_instance->create($allData);
+            $book_instance->create($allData);
             echo json_encode(HttpResponses::created());
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
@@ -79,18 +79,18 @@ class BookController {
         try {
             $allData = [
                 "id" => $id,
-                ":title" => $data["title"],
-                ":author" => $data["author"],
-                ":year" => $data["year"],
-                ":genre" => $data["genre"],
-                ":isFavorite" => $data["isFavorite"],
-                ":user_id" => $data["user_id"],
-                ":updatedAt" => $data["updatedAt"]
+                "title" => $data["title"],
+                "author" => $data["author"],
+                "year" => $data["year"],
+                "genre" => json_encode($data["genre"]),
+                "isFavorite" => $data["isFavorite"],
+                "user_id" => $data["user_id"],
+                "updatedAt" => $data["updatedAt"]
             ];
 
             $book_instance = new BookModel();
             $book_instance->update($allData);
-            echo json_encode(HttpResponses::ok("Book with id " . $data['id'] . " has been updated."));
+            echo json_encode(HttpResponses::ok("Book with id " . $id . " has been updated."));
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
