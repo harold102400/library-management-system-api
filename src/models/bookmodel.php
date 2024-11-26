@@ -5,7 +5,7 @@ namespace Api\models;
 use Api\database\DbConnection;
 use \PDO;
 
-class ProductsModels {
+class BookModel {
 
     public $tableName = "books";
     public $conn;
