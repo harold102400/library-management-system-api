@@ -1,0 +1,19 @@
+{
+    "name": "haroldmontes/library-management-system-api",
+    "description": "library Management",
+    "autoload": {
+        "psr-4": {
+            "Api\\": "src/"
+        },
+        "authors": [
+            {
+                "name" :"Harold Montes"
+            }
+        ]
+    },
+    "require": {
+        "bramus/router": "^1.6",
+        "vlucas/phpdotenv": "^5.6",
+        "firebase/php-jwt": "^6.10"
+    }
+}
