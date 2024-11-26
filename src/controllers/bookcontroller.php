@@ -35,7 +35,7 @@ class BookController {
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
-            error_log("Error message n" . $error);
+            error_log("Error message \n" . $error);
         }
     }
 
@@ -61,7 +61,7 @@ class BookController {
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
-            error_log("Error message n" . $error);
+            error_log("Error message \n" . $error);
         }
     }
 
@@ -79,7 +79,7 @@ class BookController {
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
-            error_log("Error message n" . $error);
+            error_log("Error message \n" . $error);
         }
     }
 
@@ -106,7 +106,7 @@ class BookController {
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
-            error_log("Error message n" . $error);
+            error_log("Error message \n" . $error);
         }
     }
 
@@ -122,7 +122,7 @@ class BookController {
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
-            error_log("Error message n" . $error);
+            error_log("Error message \n" . $error);
         }
     }
 
