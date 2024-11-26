@@ -1,6 +1,7 @@
 <?php
 
 namespace Api\models;
+
 use Api\database\DbConnection;
 use \PDO;
 
@@ -16,24 +17,33 @@ class UserModel
 
     public function userLogin(array $login_data)
     {
-        $query = "SELECT * FROM users WHERE username = :username";
-        $stmt = $this->conn->prepare($query);
+        if (isset($login_data['username'])) {
+            $query = "SELECT * FROM users WHERE username = :username";
+            $stmt = $this->conn->prepare($query);
 
-        if (!$stmt) {
-            return null; 
+            if (!$stmt) {
+                return null;
+            }
+
+            $stmt->execute([
+                ":username" => $login_data["username"]
+            ]);
+        } elseif (isset($login_data['email'])) {
+            $query = "SELECT * FROM users WHERE email = :email";
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->execute([
+                ":email" => $login_data["email"]
+            ]);
         }
 
-        $stmt->execute([
-            ":username" => $login_data["username"]
-        ]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($login_data["password"], $user["password"])) {
             return $user;
         }
 
-
-        return null; 
+        return null;
     }
 
     public function getUser(int $id)
@@ -49,13 +59,14 @@ class UserModel
 
     public function createUser(array $data_from_form)
     {
-        $sql = "INSERT into users (username, email, password)VALUES (:username, :name, :password)";
+        $sql = "INSERT into users (username, email, password, createdAt)VALUES (:username, :email, :password, :createdAt)";
         $stmt = $this->conn->prepare($sql);
         if ($stmt) {
             $stmt->execute([
                 "username" => $data_from_form['username'],
                 "email" => $data_from_form['email'],
-                "passoword" => $data_from_form['password']
+                "password" => $data_from_form['password'],
+                "createdAt" => $data_from_form['createdAt']
             ]);
             return $this->getUsernameFromDB($data_from_form['username']);
         }
@@ -66,6 +77,14 @@ class UserModel
         $sql = "SELECT * FROM users WHERE username = :username";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([":username" => $username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getEmailFromDB(string $email)
+    {
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([":email" => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
