@@ -43,8 +43,7 @@ class BookModel {
                 'data' => $data,
                 'totalCount' => $totalCount,
                 'page' => $page,
-                'limit' => $limit,
-                'sql' => $sql
+                'limit' => $limit
             ];
         }
     }
