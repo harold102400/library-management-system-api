@@ -34,11 +34,11 @@ class UserController
                 $now = time();
                 $key = $_ENV['TOKEN_KEY'];
                 $payload = [
-                    'exp' => $now + 3600,
+                    'exp' => $now + 86400,
                     'id' => $data_from_db['user_id']
                 ];
                 $jwt = JWT::encode($payload, $key, 'HS256');
-                $user_details = ["token" => $jwt, "display_name"=> $data_from_db['username']];
+                $user_details = ["token" => $jwt, "user_id" => $data_from_db["user_id"], "display_name"=> $data_from_db['username'], ];
                 echo json_encode($user_details);
             }
             else if (!$data_from_db) {

@@ -5,6 +5,7 @@ namespace Api\controllers;
 
 use Api\helpers\ErrorLog;
 use Api\helpers\HttpResponses;
+use Api\helpers\Validations;
 use Api\models\BookModel;
 
 class BookController {
@@ -35,6 +36,10 @@ class BookController {
 
     public function create($new_book)
     {
+        $validationResult = Validations::validate($new_book);
+        if(!$validationResult){
+            return;
+        }
         try {
             $allData = [
                 "title" => $new_book["title"],
@@ -76,6 +81,10 @@ class BookController {
 
     public function update(int $id, array $data)
     {
+        $validationResult = Validations::validate($data);
+        if(!$validationResult){
+            return;
+        }
         try {
             $allData = [
                 "id" => $id,
@@ -85,7 +94,7 @@ class BookController {
                 "genre" => json_encode($data["genre"]),
                 "isFavorite" => $data["isFavorite"],
                 "user_id" => $data["user_id"],
-                "updatedAt" => $data["updatedAt"]
+                "updatedAt" => date('Y-m-d h:i:s')
             ];
 
             $book_instance = new BookModel();
