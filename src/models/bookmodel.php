@@ -22,7 +22,10 @@ class BookModel {
         $sql = "SELECT * FROM $this->tableName";
 
         if (!empty($search)) {
-            $sql.= " WHERE title LIKE '%{$search}%'";
+            $sql.= " WHERE title LIKE '%{$search}%'
+                     OR author LIKE '%{$search}%'
+                     OR year LIKE '%{$search}%'
+            ";
         }
         $sql.= " LIMIT $limit OFFSET $offset;";
         
@@ -33,7 +36,10 @@ class BookModel {
             $countSql = "SELECT COUNT(*) as total FROM $this->tableName";
 
             if (!empty($search)) {
-                $countSql .= " WHERE title LIKE '%{$search}%'";
+                $countSql .= " WHERE title LIKE '%{$search}%'
+                               OR author LIKE '%{$search}%'
+                               OR year LIKE '%{$search}%'
+                ";
             }
 
 
