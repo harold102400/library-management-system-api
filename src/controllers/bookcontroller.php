@@ -12,13 +12,13 @@ class BookController {
     public function getAllBooks()
     {
         $page = (int)@$_GET['page'] ?? 1;
-        $limit = (int)@$_GET['limit'] ?? 10;
+        $limit = (int)@$_GET['limit'] ?? 5;
         $search = @$_GET['search'] ?? '';
         if ($page <= 0) {
             $page = 1;
         }
         if ($limit <= 0) {
-           $limit = 10;
+           $limit = 5;
         }
         if ($limit > 100) {
             $limit = 100;
