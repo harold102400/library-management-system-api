@@ -7,7 +7,7 @@ use Api\helpers\HttpResponses;
 class Validations {
     public static function validate(array $data)
     {
-        if(empty($data["title"]) || empty($data["author"]) || empty($data["year"]) || empty($data["genre"])){
+        if(empty($data["title"]) || empty($data["author"]) || empty($data["year"]) ){
             echo json_encode(HttpResponses::notFound("These fields cannot be empty!"));
             return false;
         }
