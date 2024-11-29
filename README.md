@@ -11,7 +11,7 @@
 - Clone this repository to your local machine.
 - Install XAMPP and start/activate the Apache and MySQL modules.
 - Install Composer in your computer, you can get it from this website https://getcomposer.org/download/ and once it is installed in your computer, you need to run in your terminal inside the project the command **composer install** to install the project dependencies.
-- In Postman you will use http://localhost/api/users, which is the endpoint for the routes.
+- In Postman you will use http://localhost/{name_of_your_folder}api/books, which is the endpoint for the routes.
 
 ## Database Migration with Phinx
 
