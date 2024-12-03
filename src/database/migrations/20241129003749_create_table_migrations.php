@@ -25,6 +25,7 @@ final class CreateTableMigrations extends AbstractMigration
             ->addColumn('author', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('year', 'string', ['limit' => 50, 'null' => false])
             ->addColumn('genre', 'json', ['null' => false])
+            ->addColumn('coverImage', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('isFavorite', 'boolean', ['null' => false])
             ->addColumn('user_id', 'integer', ['null' => true])
             ->addColumn('createdAt', 'datetime', ['null' => false])

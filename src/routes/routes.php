@@ -23,10 +23,14 @@ $router->get('/api/books/{id}', function($id) {
 
 $router->post('/api/books', function() {
     AuthMiddleware::handle();
-    $json = file_get_contents('php://input');
-    $data = json_decode($json, true);
+    // $json = file_get_contents('php://input'); Esta es la forma que usaba para mandarlos anteriormente cuando no habia imagen
+    // $data = json_decode($json, true);
+    
+    $data = $_POST; 
+    $files = $_FILES; 
+
     $book = new BookController();
-    $book->create($data);
+    $book->create($data, $files);
 });
 
 $router->post('/api/register', function(){
@@ -47,8 +51,9 @@ $router->put('/api/books/{id}', function($id) {
     AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
+    $files = $_FILES; 
     $book = new BookController();
-    $book->update($id, $data);
+    $book->update($id, $data, $files);
 });
 
 $router->delete('/api/books/{id}', function($id) {

@@ -4,6 +4,7 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 header('Content-Type: application/json'); 
+date_default_timezone_set('America/Santo_Domingo');
 $method = $_SERVER['REQUEST_METHOD'];
 if($method == "OPTIONS") {
     die();

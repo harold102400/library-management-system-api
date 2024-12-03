@@ -56,7 +56,7 @@ class BookModel {
 
     public function create(array $new_book)
     {
-        $sql = "INSERT INTO $this->tableName(title, author, year, genre, isFavorite, user_id, createdAt, updatedAt) VALUES (:title, :author, :year, :genre, :isFavorite, :user_id, :createdAt, :updatedAt)";
+        $sql = "INSERT INTO $this->tableName(title, author, year, genre, coverImage, isFavorite, user_id, createdAt, updatedAt) VALUES (:title, :author, :year, :genre, :coverImage, :isFavorite, :user_id, :createdAt, :updatedAt)";
         $result = $this->conn->prepare($sql);
         if ($result) {
             $result->execute([
@@ -64,6 +64,7 @@ class BookModel {
                 ":author" => $new_book["author"],
                 ":year" => $new_book["year"],
                 ":genre" => $new_book["genre"],
+                ":coverImage" => $new_book["coverImage"],
                 ":isFavorite" => $new_book["isFavorite"],
                 ":user_id" => $new_book["user_id"],
                 ":createdAt" => $new_book["createdAt"],
@@ -71,6 +72,17 @@ class BookModel {
             ]);
         }
     }
+
+    // public function createCoverImg(array $coverImage)
+    // {
+    //     $sql = "INSERT INTO $this->tableName(coverImage) VALUES (:coverImage)";
+    //     $result = $this->conn->prepare($sql);
+    //     if ($result) {
+    //         $result->execute([
+    //             ":coverImage" => $coverImage["coverImage"]
+    //         ]);
+    //     }
+    // }
 
     public function getBook(int $id)
     {
@@ -94,6 +106,7 @@ class BookModel {
                 ":author" => $data["author"],
                 ":year" => $data["year"],
                 ":genre" => $data["genre"],
+                "coverImage" => $data["coverImage"],
                 ":isFavorite" => $data["isFavorite"],
                 ":user_id" => $data["user_id"],
                 ":updatedAt" => $data["updatedAt"]

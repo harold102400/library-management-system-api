@@ -16,9 +16,8 @@ class UserController
 {
     public function userLoginAuth($raw_data_from_endpoint)
     {
-        try {
+        try {   
             $login_data = [];
-            $token_key = $_ENV['TOKEN_KEY'];
             if (isset($raw_data_from_endpoint['username'])) {
                 $login_data["username"] = $raw_data_from_endpoint['username'];
             } else {
@@ -31,10 +30,13 @@ class UserController
             $data_from_db = $userModel->userLogin($login_data);
             if ($data_from_db) {
                 $now = time();
-                $key = $token_key;
+                $key = $_ENV['TOKEN_KEY'];
                 $payload = [
+                    'iss' => 'my-library-app',
+                    'iat' => $now,
                     'exp' => $now + 86400,
-                    'id' => $data_from_db['user_id']
+                    'id' => (int)$data_from_db['user_id'],
+                    'username' => $data_from_db['username'],
                 ];
                 $jwt = JWT::encode($payload, $key, 'HS256');
                 $user_details = ["token" => $jwt, "user_id" => $data_from_db["user_id"], "display_name"=> $data_from_db['username'], ];
@@ -58,7 +60,6 @@ class UserController
 
     public function getToken()
     {
-        $token_key = $_ENV['TOKEN_KEY'];
         $headers = apache_request_headers();
         if (!isset($headers["Authorization"])) {
             return $this->unauthorizedResponse("Unauthenticated request");
@@ -71,7 +72,7 @@ class UserController
         }
         $token = $authorization_array[1];
         try {
-            $decoded_token = JWT::decode($token, new Key($token_key, 'HS256'));
+            $decoded_token = JWT::decode($token, new Key($_ENV['TOKEN_KEY'], 'HS256'));
             return $decoded_token;
         } catch (\Throwable $e) {
             return $this->unauthorizedResponse("Invalid token: " . $e->getMessage());
