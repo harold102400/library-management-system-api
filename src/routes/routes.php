@@ -23,14 +23,17 @@ $router->get('/api/books/{id}', function($id) {
 
 $router->post('/api/books', function() {
     AuthMiddleware::handle();
-    // $json = file_get_contents('php://input'); Esta es la forma que usaba para mandarlos anteriormente cuando no habia imagen
-    // $data = json_decode($json, true);
-    
-    $data = $_POST; 
-    $files = $_FILES; 
-
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
     $book = new BookController();
-    $book->create($data, $files);
+    $book->create($data);
+});
+
+$router->post('/api/books/uploadcover', function() {
+    $id = $_POST; 
+    $image = $_FILES; 
+    $book = new BookController();
+    $book->uploadCoverImg($id, $image);
 });
 
 $router->post('/api/register', function(){
@@ -51,9 +54,15 @@ $router->put('/api/books/{id}', function($id) {
     AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    $files = $_FILES; 
     $book = new BookController();
-    $book->update($id, $data, $files);
+    $book->update($id, $data);
+});
+
+$router->patch('/api/books/{id}', function($id) {
+    $json = file_get_contents('php://input');
+    $dataToUpdate = json_decode($json, true);
+    $book = new BookController();
+    $book->partialUpdate($id, $dataToUpdate);
 });
 
 $router->delete('/api/books/{id}', function($id) {
