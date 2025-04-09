@@ -12,10 +12,10 @@ class Validations {
             return false;
         }
 
-        if(!is_array($data["genre"])){
-            echo json_encode(HttpResponses::notFound("This field has to be an array!"));
+        if (is_null(json_decode($data["genre"], true)) && json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(HttpResponses::notFound("This field must be a valid JSON!"));
             return false;
-        }
+        }        
       
         if(!trim($data["title"]) || !trim($data["author"]) || !trim($data["year"])){
             

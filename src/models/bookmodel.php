@@ -73,17 +73,6 @@ class BookModel {
         }
     }
 
-    // public function createCoverImg(array $coverImage)
-    // {
-    //     $sql = "INSERT INTO $this->tableName(coverImage) VALUES (:coverImage)";
-    //     $result = $this->conn->prepare($sql);
-    //     if ($result) {
-    //         $result->execute([
-    //             ":coverImage" => $coverImage["coverImage"]
-    //         ]);
-    //     }
-    // }
-
     public function getBook(int $id)
     {
         $sql = "SELECT * FROM $this->tableName WHERE id=:id";
@@ -106,13 +95,39 @@ class BookModel {
                 ":author" => $data["author"],
                 ":year" => $data["year"],
                 ":genre" => $data["genre"],
-                "coverImage" => $data["coverImage"],
                 ":isFavorite" => $data["isFavorite"],
                 ":user_id" => $data["user_id"],
                 ":updatedAt" => $data["updatedAt"]
             ]);
         }
     }
+
+    public function partialUpdate(array $data)
+    {
+    // Separar el ID del resto de los datos
+    $id = $data['id'];
+    unset($data['id']);
+
+    // Construir dinámicamente los parámetros del SET
+    $sql_parameters = [];
+    foreach ($data as $key => $value) {
+        $sql_parameters[] = "$key = :$key";
+    }
+
+    // Unir los parámetros en un string tipo "isFavorite = :isFavorite, otraColumna = :otraColumna"
+    $set_clause = implode(', ', $sql_parameters);
+
+    // Construir el SQL final
+    $sql = "UPDATE $this->tableName SET $set_clause WHERE id = :id";
+
+    // Aquí preparas y ejecutas la consulta con PDO, por ejemplo:
+    $result = $this->conn->prepare($sql);
+    $data['id'] = $id;       
+        if ($result) {
+            $result->execute($data);
+        }
+    }
+
 
     public function delete(int $id)
     {
