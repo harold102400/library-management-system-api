@@ -73,8 +73,12 @@ class BookController
             //se obtiene la imagen actual de la db para actualizarlo una vez se agrega la nueva imagen si se esta editando
             $currentImage = $book_instance->getBook($id["bookId"]);
 
-            // se mueve la imagen al servidor local
+            // se mueve la imagen al servidor local en caso de sea falso por un error se detiene la ejecucion de la funcion para validar el error
             $newImage = $coverImage ? $this->createCoverImg($coverImage, $currentImage["coverImage"]) : null;
+
+            if (!$newImage) {
+                return;
+            }
 
             ///se crea el array
             $allData = [
@@ -170,7 +174,7 @@ class BookController
                 "title" => $data["title"],
                 "author" => $data["author"],
                 "year" => $data["year"],
-                "genre" => json_encode($data["genre"]),
+                "genre" => $data["genre"],
                 "isFavorite" => $data["isFavorite"],
                 "user_id" => $data["user_id"],
                 "updatedAt" => date('Y-m-d H:i:s')
