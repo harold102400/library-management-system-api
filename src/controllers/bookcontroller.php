@@ -120,11 +120,11 @@ class BookController
 
             $size = $file['coverImage']['size'];
 
-            if ($size > 2000000) {
-                echo json_encode(HttpResponses::notFound("The file has to be less than 2Mb"));
+            if ($size > 5000000) {
+                echo json_encode(HttpResponses::notFound("The file has to be less than 5Mb"));
                 return false;
             } else {
-                if ($fileType == "jpg" || $fileType == "jpeg" || $fileType == "png") {
+                if ($fileType == "jpg" || $fileType == "jpeg" || $fileType == "png" || $fileType == "gif") {
                     if (move_uploaded_file($file['coverImage']['tmp_name'], $filePath)) {
                         return $this->image;
                     } else {
