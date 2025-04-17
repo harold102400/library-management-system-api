@@ -36,6 +36,13 @@ $router->post('/api/books/uploadcover', function() {
     $book->uploadCoverImg($id, $image);
 });
 
+$router->post('/api/books/generatepdf', function(){
+    $json = file_get_contents('php://input');
+    $books_to_pdf  = json_decode($json, true);
+    $book_instance = new BookController();
+    $book_instance->generatePdf($books_to_pdf);
+});
+
 $router->post('/api/register', function(){
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);

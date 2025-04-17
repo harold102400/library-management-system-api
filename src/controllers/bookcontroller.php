@@ -6,6 +6,8 @@ use Api\helpers\ErrorLog;
 use Api\helpers\HttpResponses;
 use Api\helpers\Validations;
 use Api\models\BookModel;
+use Dompdf\Dompdf;
+
 
 class BookController
 {
@@ -141,6 +143,66 @@ class BookController
             echo json_encode(HttpResponses::notFound("The file is not an image"));
             return false;
         }
+    }
+
+    public function generatePdf($books)
+    {
+        $dompdf = new Dompdf();
+
+        $css = file_get_contents(__DIR__ . '/../../css/pdf-style.css');
+
+        $html = "
+            <html>
+            <head>
+                <meta charset='utf-8'>
+                <style>
+                    $css
+                </style>
+            </head>
+            <body>
+            <h1>Books report</h1>
+            <table class='book-table'>
+                <thead>
+                    <tr>
+                    <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Year</th>
+                        <th>Genre</th>
+                        <th>Favorite book</th>
+                        <th>Date of creation</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+
+        foreach ($books as $book) {
+            $genres = json_decode($book['genre'], true);
+            $genres_string = is_array($genres) ? implode(', ', $genres) : $book['genre'];
+            $is_favorite = $book['isFavorite'] == 1 ? 'Yes' : 'No';
+            $date = date('d/m/Y', strtotime($book['createdAt']));
+            $year = date('Y', strtotime($book['year']));
+            $html .=
+            "<tr>
+            <td>{$book['id']}</td>
+            <td>{$book['title']}</td>
+            <td>{$book['author']}</td>
+            <td>{$year}</td>
+            <td>{$genres_string}</td>
+            <td>{$is_favorite}</td>
+            <td>{$date}</td>";
+        }
+
+        $html .= "</tr>
+                    </tbody>
+                </table>
+            </body>
+            </html>";
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $dompdf->stream("archivo_.pdf", array("Attachment" => false));
     }
 
     public function getBook(int $id)

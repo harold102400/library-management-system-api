@@ -1,0 +1,23 @@
+
+  h1{
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+  }
+  .book-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .book-table th,
+  .book-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .book-table th {
+    background-color: #000;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+  }
