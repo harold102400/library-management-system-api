@@ -114,8 +114,8 @@ class UserController
                 echo json_encode(HttpResponses::notFound("This email already exists!"));
                 return;
             }
-            $new_user = $user->createUser($allData);
-            echo json_encode(HttpResponses::created($new_user));
+            $user->createUser($allData);
+            echo json_encode(HttpResponses::created());
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());
             ErrorLog::showErrors();
