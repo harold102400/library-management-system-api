@@ -43,6 +43,13 @@ $router->post('/api/books/generatepdf', function(){
     $book_instance->generatePdf($books_to_pdf);
 });
 
+$router->post('/api/books/generatepdf/{id}', function($id){
+    $json = file_get_contents('php://input');
+    $books_to_pdf  = json_decode($json, true);
+    $book_instance = new BookController();
+    $book_instance->generateOnePdf($books_to_pdf, $id);
+});
+
 $router->post('/api/register', function(){
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
