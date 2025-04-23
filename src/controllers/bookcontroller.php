@@ -205,6 +205,63 @@ class BookController
         $dompdf->stream("archivo_.pdf", array("Attachment" => false));
     }
 
+    public function generateOnePdf($book, $id)
+    {
+        $dompdf = new Dompdf();
+        $options = $dompdf->getOptions();
+        $options->set(array('isRemoteEnabled' => true));
+        $dompdf->setOptions($options);
+        $current_date = date('d/m/Y');
+
+        $css = file_get_contents(__DIR__ . '/../../css/pdf-style.css');
+
+       
+        $html = "<html>
+                <head>
+                    <meta charset='utf-8'>
+                    <style>
+                        $css
+                    </style>
+                </head>";
+
+        $html .= "<body>
+                    <h1 style='text-align: center;'>Book report</h1>
+                    <div class='book_container' >
+                    <div class='book-info'>
+                        <p class='book_title'><strong>Title:</strong> {$book["title"]}</p>
+                        <p class='book_title'><strong>Author:</strong> {$book["author"]}</p>
+                        <p class='book_title'><strong>Year:</strong> {$book["year"]}</p>
+                        <p class='book_title'><strong>Genre:</strong></p>";
+                        
+                        $genres = json_decode($book["genre"], true);
+                        if (count($genres) === 0) {
+                           $html.="<p class='info_text'>This book doesn't have any genre</p>";
+                        } else {
+                            $html.= "<div class='genres-list'>";
+                            foreach ($genres as $genre) {
+                                $html.= "<span class='genre-badge'>{$genre}</span>";
+                            }
+                            $html.= "</div>";
+                        }
+                      
+                        $html .= '
+                        <p class="book_title"><strong>Favorite:</strong> ' . ($book['isFavorite'] == 1 ? 'Marked as favorite' : 'It has not been marked as favorite') . '</p>
+                        <p class="book_title"><strong>Date of creation:</strong> ' . $book["createdAt"] . '</p>
+                        <p class="book_title"><strong>Last time it was updated:</strong> ' . ($book["updatedAt"] !== null ? $book["updatedAt"] : 'It has not been updated yet') . '</p>
+                        <p class="book_title"><strong>Book cover:</strong></p>
+                        <div class="bookimg-container"><img src="http://localhost/public/images/' . ($book['coverImage'] ? $book['coverImage'] : "Image_not_available.png") . '" class="book-cover"/></div>
+                    </div>
+                    </div>
+                    <h1 class="footer-info">This document was printed on '. $current_date .' | Book ID: '. $id .'</h1>
+                    </body></html>';
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $dompdf->stream("book_{$id}.pdf", array("Attachment" => false));
+    }
+
     public function getBook(int $id)
     {
         try {
