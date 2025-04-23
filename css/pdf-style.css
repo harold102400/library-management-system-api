@@ -21,3 +21,70 @@
     color: white;
     font-family: 'Poppins', sans-serif;
   }
+
+
+  .book_container {
+    max-width: 485px;
+    margin: 0 auto;
+    border: 1px solid #ccc; 
+    padding: 5px; 
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .book-info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .book_title {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+
+  }
+  .info_text {
+    font-size: 1.1rem;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+
+.genres-list {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.genre-badge {
+  display: inline-block;
+  padding: 6px 22px;
+  margin: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+  background-color: transparent;
+  text-align: center;
+}
+
+.bookimg-container {
+  text-align: center;
+}
+
+.book-cover {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+}
+  
+.footer-info {
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  text-align: right;
+}
