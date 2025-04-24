@@ -7,6 +7,10 @@ use Api\helpers\HttpResponses;
 use Api\helpers\Validations;
 use Api\models\BookModel;
 use Dompdf\Dompdf;
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
+$dotenv->load();
+
 
 
 class BookController
@@ -249,7 +253,7 @@ class BookController
                         <p class="book_title"><strong>Date of creation:</strong> ' . $book["createdAt"] . '</p>
                         <p class="book_title"><strong>Last time it was updated:</strong> ' . ($book["updatedAt"] !== null ? $book["updatedAt"] : 'It has not been updated yet') . '</p>
                         <p class="book_title"><strong>Book cover:</strong></p>
-                        <div class="bookimg-container"><img src="http://localhost/public/images/' . ($book['coverImage'] ? $book['coverImage'] : "Image_not_available.png") . '" class="book-cover"/></div>
+                        <div class="bookimg-container"><img src="'. $_ENV["UPLOADED_IMG_PATH"] .'/public/images/' . ($book['coverImage'] ? $book['coverImage'] : "Image_not_available.png") . '" class="book-cover"/></div>
                     </div>
                     </div>
                     <h1 class="footer-info">This document was printed on '. $current_date .' | Book ID: '. $id .'</h1>
