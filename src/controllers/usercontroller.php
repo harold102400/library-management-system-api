@@ -34,15 +34,34 @@ class UserController
                 $payload = [
                     'iss' => 'my-library-app',
                     'iat' => $now,
-                    'exp' => $now + 86400,
-                    'id' => (int)$data_from_db['user_id'],
-                    'username' => $data_from_db['username'],
+                    'exp' => $now + 120,
+                    'id' => (int) $data_from_db['user_id']
                 ];
                 $jwt = JWT::encode($payload, $key, 'HS256');
-                $user_details = ["token" => $jwt, "user_id" => $data_from_db["user_id"], "display_name"=> $data_from_db['username'], ];
+                setcookie('token', $jwt, [
+                    'expires' => $now + 120,
+                    'path' => '/',
+                    'secure' => false,       
+                    'httponly' => true,    
+                    'samesite' => 'Lax'
+                ]);
+                setcookie('username', $data_from_db['username'], [
+                    'expires' => $now + 120,
+                    'path' => '/',
+                    'secure' => false,       
+                    'httponly' => false,     
+                    'samesite' => 'Lax'
+                ]);
+                setcookie('user_id', $data_from_db['user_id'], [
+                    'expires' => $now + 120,
+                    'path' => '/',
+                    'secure' => false,      
+                    'httponly' => false,   
+                    'samesite' => 'Lax'
+                ]);
+                $user_details = ["token" => $jwt, "user_id" => $data_from_db["user_id"], "display_name" => $data_from_db['username'],];
                 echo json_encode($user_details);
-            }
-            else if (!$data_from_db) {
+            } else if (!$data_from_db) {
                 echo json_encode(HttpResponses::notFound("Invalid username or password"));
             }
         } catch (\Throwable $error) {
@@ -60,19 +79,24 @@ class UserController
 
     public function getToken()
     {
-        $headers = apache_request_headers();
-        if (!isset($headers["Authorization"])) {
-            return $this->unauthorizedResponse("Unauthenticated request");
-        }
-        $authorization = $headers["Authorization"];
-        $authorization_array = explode(" ", $authorization);
+        // $headers = apache_request_headers();
+        // if (!isset($headers["Authorization"])) {
+        //     return $this->unauthorizedResponse("Unauthenticated request");
+        // }
+        // $authorization = $headers["Authorization"];
+        // $authorization_array = explode(" ", $authorization);
 
-        if (count($authorization_array) !== 2) {
-            return $this->unauthorizedResponse("Token format is invalid");
+        // if (count($authorization_array) !== 2) {
+        //     return $this->unauthorizedResponse("Token format is invalid");
+        // }
+        // $token = $authorization_array[1];
+        $jwt_from_cookies = $_COOKIE['token'] ?? null;
+        if (!$jwt_from_cookies) {
+            return $this->unauthorizedResponse("No token provided");
         }
-        $token = $authorization_array[1];
         try {
-            $decoded_token = JWT::decode($token, new Key($_ENV['TOKEN_KEY'], 'HS256'));
+            $decoded_token = JWT::decode($jwt_from_cookies, new Key($_ENV['TOKEN_KEY'], 'HS256'));
+            echo json_encode($decoded_token);
             return $decoded_token;
         } catch (\Throwable $e) {
             return $this->unauthorizedResponse("Invalid token: " . $e->getMessage());
