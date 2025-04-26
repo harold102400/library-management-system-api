@@ -16,6 +16,11 @@ $router->get('/api/books', function() {
     $books->getAllBooks();
 });
 
+$router->get('/api/auth/checksession', function() {
+    $user_instance = new UserController();
+    $user_instance->getToken();
+});
+
 $router->get('/api/books/{id}', function($id) {
     $book = new BookController();
     $book->getBook($id);
