@@ -61,8 +61,9 @@ class UserController
                 ]);
                 $user_details = ["token" => $jwt, "user_id" => $data_from_db["user_id"], "display_name" => $data_from_db['username'],];
                 echo json_encode($user_details);
-            } else if (!$data_from_db) {
+            } else {
                 echo json_encode(HttpResponses::notFound("Invalid username or password"));
+                return;
             }
         } catch (\Throwable $error) {
             echo json_encode(HttpResponses::serverError());

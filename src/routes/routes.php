@@ -12,7 +12,6 @@ $router->get('/api', function(){
 });
 
 $router->get('/api/books', function() {
-    AuthMiddleware::handle();
     $books = new BookController();
     $books->getAllBooks();
 });
