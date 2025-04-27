@@ -12,6 +12,7 @@ $router->get('/api', function(){
 });
 
 $router->get('/api/books', function() {
+    AuthMiddleware::handle();
     $books = new BookController();
     $books->getAllBooks();
 });
@@ -27,6 +28,7 @@ $router->get('/api/auth/endsession', function() {
 });
 
 $router->get('/api/books/{id}', function($id) {
+    AuthMiddleware::handle();
     $book = new BookController();
     $book->getBook($id);
 });
@@ -40,6 +42,7 @@ $router->post('/api/books', function() {
 });
 
 $router->post('/api/books/uploadcover', function() {
+    AuthMiddleware::handle();
     $id = $_POST; 
     $image = $_FILES; 
     $book = new BookController();
@@ -47,6 +50,7 @@ $router->post('/api/books/uploadcover', function() {
 });
 
 $router->post('/api/books/generatepdf', function(){
+    AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $books_to_pdf  = json_decode($json, true);
     $book_instance = new BookController();
@@ -54,6 +58,7 @@ $router->post('/api/books/generatepdf', function(){
 });
 
 $router->post('/api/books/generatepdf/{id}', function($id){
+    AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $books_to_pdf  = json_decode($json, true);
     $book_instance = new BookController();
@@ -83,6 +88,7 @@ $router->put('/api/books/{id}', function($id) {
 });
 
 $router->patch('/api/books/{id}', function($id) {
+    AuthMiddleware::handle();
     $json = file_get_contents('php://input');
     $dataToUpdate = json_decode($json, true);
     $book = new BookController();
