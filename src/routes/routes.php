@@ -12,6 +12,7 @@ $router->get('/api', function(){
 });
 
 $router->get('/api/books', function() {
+    AuthMiddleware::handle();
     $books = new BookController();
     $books->getAllBooks();
 });
@@ -19,6 +20,11 @@ $router->get('/api/books', function() {
 $router->get('/api/auth/checksession', function() {
     $user_instance = new UserController();
     $user_instance->getToken();
+});
+
+$router->get('/api/auth/endsession', function() {
+    $user_instance = new UserController();
+    $user_instance->endsession();
 });
 
 $router->get('/api/books/{id}', function($id) {

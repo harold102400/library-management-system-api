@@ -34,26 +34,26 @@ class UserController
                 $payload = [
                     'iss' => 'my-library-app',
                     'iat' => $now,
-                    'exp' => $now + 120,
+                    'exp' => $now + 3600,
                     'id' => (int) $data_from_db['user_id']
                 ];
                 $jwt = JWT::encode($payload, $key, 'HS256');
                 setcookie('token', $jwt, [
-                    'expires' => $now + 120,
+                    'expires' => $now + 3600,
                     'path' => '/',
                     'secure' => false,       
                     'httponly' => true,    
                     'samesite' => 'Lax'
                 ]);
                 setcookie('username', $data_from_db['username'], [
-                    'expires' => $now + 120,
+                    'expires' => $now + 3600,
                     'path' => '/',
                     'secure' => false,       
                     'httponly' => false,     
                     'samesite' => 'Lax'
                 ]);
                 setcookie('user_id', $data_from_db['user_id'], [
-                    'expires' => $now + 120,
+                    'expires' => $now + 3600,
                     'path' => '/',
                     'secure' => false,      
                     'httponly' => false,   
@@ -96,11 +96,35 @@ class UserController
         }
         try {
             $decoded_token = JWT::decode($jwt_from_cookies, new Key($_ENV['TOKEN_KEY'], 'HS256'));
-            echo json_encode($decoded_token);
+            // echo json_encode($decoded_token);
             return $decoded_token;
         } catch (\Throwable $e) {
             return $this->unauthorizedResponse("Invalid token: " . $e->getMessage());
         }
+    }
+    public function endsession()
+    {
+        setcookie('token', '', [
+            'expires' => time() - 3600,  
+            'path' => '/',                
+            'secure' => false,            
+            'httponly' => true,          
+            'samesite' => 'Lax'           
+        ]);
+        setcookie('username', '', [
+            'expires' => time() - 3600,  
+            'path' => '/',               
+            'secure' => false,           
+            'httponly' => false,        
+            'samesite' => 'Lax'          
+        ]);
+        setcookie('user_id', '', [
+            'expires' => time() - 3600,  
+            'path' => '/',               
+            'secure' => false,           
+            'httponly' => false,        
+            'samesite' => 'Lax'          
+        ]);
     }
 
     public function validateToken()
