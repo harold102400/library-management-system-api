@@ -102,6 +102,49 @@ class BookController
         }
     }
 
+    public function deleteCoverImg($id) 
+    {
+        try {
+            //primero se crea la instancia
+            $book_instance = new BookModel();
+
+            //se obtiene la imagen actual de la db para actualizarla a NULL
+            $currentImage = $book_instance->getBook($id);
+
+            // se elimina la imagen fisicamente
+            $defaultImage = $this->deleteCoverImgFromDirectory( $currentImage["coverImage"]);
+
+            ///se crea el array
+            $allData = [
+                "id" => $id,
+                "coverImage" => $defaultImage
+            ];
+
+            $book_instance->partialUpdate($allData);
+
+            echo json_encode(HttpResponses::created());
+        } catch (\Throwable $error) {
+            echo json_encode(HttpResponses::serverError());
+            ErrorLog::showErrors();
+            error_log("Error message \n" . $error);
+        }
+    }
+
+    public function deleteCoverImgFromDirectory($actual_img)
+    {
+        $directoryOfImages = __DIR__ . '/../../public/images/';
+        try {
+            if (!empty($actual_img) && file_exists($directoryOfImages . $actual_img)) {
+                unlink($directoryOfImages . $actual_img);
+                return  null;
+            }
+        } catch (\Throwable $error) {
+            echo json_encode(HttpResponses::serverError());
+            ErrorLog::showErrors();
+            error_log("Error message \n" . $error);
+        }
+    }
+
 
     public function createCoverImg($file, $actual_img = null)
     {
