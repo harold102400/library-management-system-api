@@ -95,6 +95,12 @@ $router->patch('/api/books/{id}', function($id) {
     $book->partialUpdate($id, $dataToUpdate);
 });
 
+$router->delete('/api/books/deleteimage/{id}', function($id) {
+    AuthMiddleware::handle();
+    $book = new BookController();
+    $book->deleteCoverImg($id);
+});
+
 $router->delete('/api/books/{id}', function($id) {
     AuthMiddleware::handle();
     $book = new BookController();
